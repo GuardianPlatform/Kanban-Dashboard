@@ -15,6 +15,12 @@ namespace Kanban.Dashboard.Api
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Configuration
+                .SetBasePath(builder.Environment.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables();
+
             ConfigureServices(builder.Services, builder.Configuration);
 
             builder.Services.AddControllers()
@@ -28,7 +34,7 @@ namespace Kanban.Dashboard.Api
                     };
                     options.SerializerSettings.DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate;
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                }); ;
+                });
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
