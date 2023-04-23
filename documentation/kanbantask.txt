@@ -1,0 +1,32 @@
+POST /api/board/{boardId}/column/{columnId}/task
+Description: Add a new task to a column.
+Example request:
+POST /api/board/11111111-1111-1111-1111-111111111111/column/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa/task
+{
+"title": "New Task",
+"description": "New Task description",
+"order": 5,
+"subtasks": ["Subtask N.1", "Subtask N.2"],
+"status": "Todo",
+"userAttached": "User5"
+}
+
+
+PUT /api/board/{boardId}/column/{columnId}/task/{id}
+Description: Update a task's information.
+Example request:
+PUT /api/board/11111111-1111-1111-1111-111111111111/column/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa/task/a0a0a0a0-a0a0-a0a0-a0a0-a0a0a0a0a0a0
+{
+    "title": "Updated Task",
+    "description": "Updated Task description",
+    "order": 1,
+    "subtasks": ["Updated Subtask 1.1", "Updated Subtask 1.2"],
+    "status": "Doing",
+    "userAttached": "User1"
+}
+
+
+DELETE /api/board/{boardId}/column/{columnId}/task/{id}
+Description: Delete a task from a column.
+Example request:
+DELETE /api/board/11111111-1111-1111-1111-111111111111/column/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa

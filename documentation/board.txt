@@ -1,0 +1,33 @@
+GET /api/board
+Description: Fetch all boards.
+
+
+GET /api/board/{id}
+Description: Fetch a board by its ID.
+Example request:
+GET /api/board/11111111-1111-1111-1111-111111111111
+
+
+POST /api/board
+Description: Create a new board.
+Example request:
+{
+"name": "My New Kanban Board",
+"order": 3
+}
+
+
+PUT /api/board/{id}
+Description: Update a board's information by its ID.
+Example request:
+PUT /api/board/11111111-1111-1111-1111-111111111111
+{
+"name": "Updated Kanban Board",
+"order": 1
+}
+
+
+DELETE /api/board/{id}
+Description: Delete a board by its ID.
+Example request:
+DELETE /api/board/11111111-1111-1111-1111-111111111111

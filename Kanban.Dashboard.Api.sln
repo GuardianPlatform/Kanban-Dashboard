@@ -7,7 +7,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kanban.Dashboard.Api", "Kan
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kanban.Dashboard.Core", "Kanban.Dashboard.Core\Kanban.Dashboard.Core.csproj", "{E21AC8E3-330D-4424-9341-3D7C789C11E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kanban.Dashboard.Infrastructure", "Kanban.Dashboard.Infrastructure\Kanban.Dashboard.Infrastructure.csproj", "{0CA24F3A-8324-45CB-A534-8CF44C333545}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kanban.Dashboard.Infrastructure", "Kanban.Dashboard.Infrastructure\Kanban.Dashboard.Infrastructure.csproj", "{0CA24F3A-8324-45CB-A534-8CF44C333545}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "documentation", "documentation", "{21758244-8479-4C84-BC25-C1F7E4EAC132}"
+	ProjectSection(SolutionItems) = preProject
+		documentation\board.txt = documentation\board.txt
+		documentation\column.txt = documentation\column.txt
+		documentation\kanbantask.txt = documentation\kanbantask.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
