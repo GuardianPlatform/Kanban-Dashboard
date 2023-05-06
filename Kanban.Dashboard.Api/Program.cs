@@ -50,6 +50,11 @@ namespace Kanban.Dashboard.Api
                 app.UseSwaggerUI();
             }
 
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowAnyOrigin()); 
+
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
