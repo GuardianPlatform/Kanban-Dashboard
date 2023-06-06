@@ -42,6 +42,8 @@ namespace Kanban.Dashboard.Core.Features.Tasks
                 throw new Exception("KanbanTask not found.");
 
             _mapper.Map(request.KanbanTask, task);
+            task.DateOfModification = DateTime.UtcNow;
+
             _context.KanbanTasks.Update(task);
             await _context.SaveChangesAsync(cancellationToken);
         }

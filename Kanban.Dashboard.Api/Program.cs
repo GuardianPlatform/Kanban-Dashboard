@@ -41,6 +41,7 @@ namespace Kanban.Dashboard.Api
 
             var app = builder.Build();
 
+            await MigrationProvider.Migrate(app.Services);
             await DataSeeder.SeedAsync(app.Services);
 
             // Configure the HTTP request pipeline.

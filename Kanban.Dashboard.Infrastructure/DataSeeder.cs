@@ -1,6 +1,7 @@
 ﻿using Kanban.Dashboard.Core;
 using Kanban.Dashboard.Core.Entities;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 public class DataSeeder
 {
@@ -8,8 +9,12 @@ public class DataSeeder
     {
         using var scope = serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<IApplicationDbContext>();
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<DataSeeder>>();
+
         if (!context.Boards.Any())
         {
+            logger.LogInformation("Seeding boards...");
+
             var boards = new Board[]
             {
                 new Board
@@ -51,7 +56,10 @@ public class DataSeeder
                     Description = "Task A description",
                     Order = 1,
                     ColumnId = columns[0].Id,
-                    Subtasks = new List<string> { "Subtask A.1", "Subtask A.2" },
+                    Subtasks = new List<Subtask>()
+                    {
+                        new Subtask(){ Id = Guid.Parse("a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1") }
+                    },
                     Status = "Todo",
                     UserAttached = "User1"
                 },
@@ -62,7 +70,6 @@ public class DataSeeder
                     Description = "Task B description",
                     Order = 2,
                     ColumnId = columns[0].Id,
-                    Subtasks = new List<string> { "Subtask B.1", "Subtask B.2" },
                     Status = "Doing",
                     UserAttached = "User2"
                 },
@@ -73,7 +80,6 @@ public class DataSeeder
                     Description = "Task C description",
                     Order = 1,
                     ColumnId = columns[1].Id,
-                    Subtasks = new List<string> { "Subtask C.1", "Subtask C.2" },
                     Status = "Todo",
                     UserAttached = "User1"
                 },
@@ -94,7 +100,7 @@ public class DataSeeder
                     Description = "Task E description",
                     Order = 3,
                     ColumnId = columns[1].Id,
-                    Subtasks = new List<string> { "Subtask E.1" },
+                    Subtasks = new List<Subtask>(){new Subtask(){ Id = Guid.Parse("b3b3b3b3-b3b3-b3b3-b3b3-b3b3b3b3b3b3") }},
                     Status = "Done",
                     UserAttached = "User3"
                 },

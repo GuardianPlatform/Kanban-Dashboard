@@ -37,6 +37,8 @@ namespace Kanban.Dashboard.Core.Features.Columns.Commands
                 throw new Exception("Column not found.");
 
             _mapper.Map(request.Column, column);
+            column.DateOfModification = DateTime.UtcNow;
+
             _context.Columns.Update(column);
             await _context.SaveChangesAsync(cancellationToken);
         }

@@ -40,6 +40,7 @@ namespace Kanban.Dashboard.Core.Features.Tasks.Commands
             var task = _mapper.Map<KanbanTask>(request.KanbanTask);
             task.Column.BoardId = request.BoardId;
             task.ColumnId = request.ColumnId;
+            task.DateOfCreation = DateTime.UtcNow;
 
             _context.KanbanTasks.Add(task);
             await _context.SaveChangesAsync(cancellationToken);

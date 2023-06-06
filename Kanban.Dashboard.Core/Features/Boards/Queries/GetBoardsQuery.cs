@@ -25,7 +25,11 @@ namespace Kanban.Dashboard.Core.Features.Boards.Queries
 
         public async Task<IEnumerable<BoardDto>> Handle(GetBoardsCommand request, CancellationToken cancellationToken)
         {
-            var boards = await _context.Boards.AsNoTracking().ToListAsync(cancellationToken);
+            var boards = await _context.Boards
+                .AsNoTracking()
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+
             return _mapper.Map<IEnumerable<BoardDto>>(boards);
         }
     }

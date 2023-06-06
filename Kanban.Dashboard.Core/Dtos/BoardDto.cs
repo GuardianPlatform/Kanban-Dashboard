@@ -3,11 +3,9 @@ using System.Collections.Generic;
 
 namespace Kanban.Dashboard.Core.Dtos
 {
-    public class BoardDto
+    public class BoardDto : BaseDto
     {
-        public Guid Id { get; set; }
-        public int Order { get; set; }
         public string Name { get; set; }
-        public ICollection<ColumnDto> Columns { get; set; }
+        public ICollection<ColumnDto> Columns { get; set; } = new List<ColumnDto>();
     }
 }

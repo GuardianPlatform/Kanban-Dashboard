@@ -12,6 +12,7 @@ namespace Kanban.Dashboard.Core.Mappings
             CreateMap<Board, BoardDto>().ReverseMap();
             CreateMap<Column, ColumnDto>().ReverseMap();
             CreateMap<KanbanTask, KanbanTaskDto>().ReverseMap();
+            CreateMap<Subtask, SubtaskDto>().ReverseMap();
         }
     }
 }

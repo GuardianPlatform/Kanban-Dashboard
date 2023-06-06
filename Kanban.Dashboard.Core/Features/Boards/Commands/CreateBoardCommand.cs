@@ -27,7 +27,9 @@ namespace Kanban.Dashboard.Core.Features.Boards.Commands
         public async Task<Guid> Handle(CreateBoardCommand request, CancellationToken cancellationToken)
         {
             var board = _mapper.Map<Board>(request.Board);
-            await _context.Boards.AddAsync(board, cancellationToken);
+            board.DateOfCreation = DateTime.UtcNow;
+
+            _context.Boards.Add(board);
             await _context.SaveChangesAsync(cancellationToken);
             return board.Id;
         }

@@ -38,7 +38,7 @@ namespace Kanban.Dashboard.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Boards");
+                    b.ToTable("Boards", (string)null);
                 });
 
             modelBuilder.Entity("Kanban.Dashboard.Core.Entities.Column", b =>
@@ -62,7 +62,7 @@ namespace Kanban.Dashboard.Infrastructure.Migrations
 
                     b.HasIndex("BoardId");
 
-                    b.ToTable("Columns");
+                    b.ToTable("Columns", (string)null);
                 });
 
             modelBuilder.Entity("Kanban.Dashboard.Core.Entities.KanbanTask", b =>
@@ -103,7 +103,7 @@ namespace Kanban.Dashboard.Infrastructure.Migrations
 
                     b.HasIndex("ColumnId");
 
-                    b.ToTable("KanbanTasks");
+                    b.ToTable("KanbanTasks", (string)null);
                 });
 
             modelBuilder.Entity("Kanban.Dashboard.Core.Entities.Column", b =>

@@ -34,6 +34,7 @@ namespace Kanban.Dashboard.Core.Features.Columns.Commands
                 throw new Exception("Board not found.");
 
             var column = _mapper.Map<Column>(request.Column);
+            column.DateOfCreation = DateTime.UtcNow;
             column.BoardId = request.BoardId;
 
             _context.Columns.Add(column);

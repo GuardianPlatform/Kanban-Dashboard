@@ -29,10 +29,11 @@ namespace Kanban.Dashboard.Core.Features.Boards.Queries
             var board = await _context.Boards
                 .AsNoTracking()
                 .Include(b => b.Columns)
-                .ThenInclude(c => c.Tasks)
-                .FirstOrDefaultAsync(b => b.Id == request.Id, cancellationToken);
+                .ThenInclude(c => c.Tasks).ThenInclude(x => x.Subtasks)
+                .FirstOrDefaultAsync(b => b.Id == request.Id, cancellationToken)
+                .ConfigureAwait(false);
 
-            return board != null ? _mapper.Map<BoardDto>(board) : null;
+            return board != null ? _mapper.Map<BoardDto>(board) : throw new Exception("Board not found");
         }
     }
 }

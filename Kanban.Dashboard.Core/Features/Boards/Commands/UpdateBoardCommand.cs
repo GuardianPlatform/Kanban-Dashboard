@@ -32,6 +32,8 @@ namespace Kanban.Dashboard.Core.Features.Boards.Commands
                 throw new Exception("Board not found.");
 
             _mapper.Map(request.Board, board);
+            board.DateOfModification = DateTime.UtcNow;
+
             _context.Boards.Update(board);
             await _context.SaveChangesAsync(cancellationToken);
         }
