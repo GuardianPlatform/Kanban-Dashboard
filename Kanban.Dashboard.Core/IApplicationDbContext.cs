@@ -10,6 +10,7 @@ namespace Kanban.Dashboard.Core
         DbSet<Board> Boards { get; set; }
         DbSet<Column> Columns { get; set; }
         DbSet<KanbanTask> KanbanTasks { get; set; }
+        DbSet<KanbanTaskSubtask> KanbanTaskSubtask { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }

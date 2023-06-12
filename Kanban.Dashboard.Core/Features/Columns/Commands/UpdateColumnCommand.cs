@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Kanban.Dashboard.Core.Dtos.Requests;
 
 namespace Kanban.Dashboard.Core.Features.Columns.Commands
 {
@@ -12,7 +13,7 @@ namespace Kanban.Dashboard.Core.Features.Columns.Commands
     {
         public Guid BoardId { get; set; }
         public Guid Id { get; set; }
-        public ColumnDto Column { get; set; }
+        public CreateOrUpdateColumnRequest Column { get; set; }
     }
 
     public class UpdateColumnHandler : IRequestHandler<UpdateColumnCommand>
@@ -28,6 +29,9 @@ namespace Kanban.Dashboard.Core.Features.Columns.Commands
 
         public async Task Handle(UpdateColumnCommand request, CancellationToken cancellationToken)
         {
+            var columnDto = _mapper.Map<ColumnDto>(request.Column);
+            columnDto.Id = request.Id;
+
             var board = await _context.Boards.AnyAsync(x => x.Id == request.BoardId, cancellationToken);
             if (board == false)
                 throw new Exception("Board not found.");
@@ -36,7 +40,7 @@ namespace Kanban.Dashboard.Core.Features.Columns.Commands
             if (column == null)
                 throw new Exception("Column not found.");
 
-            _mapper.Map(request.Column, column);
+            _mapper.Map(columnDto, column);
             column.DateOfModification = DateTime.UtcNow;
 
             _context.Columns.Update(column);

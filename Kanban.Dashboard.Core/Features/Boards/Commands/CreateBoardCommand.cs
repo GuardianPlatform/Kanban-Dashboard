@@ -3,14 +3,16 @@ using Kanban.Dashboard.Core.Dtos;
 using Kanban.Dashboard.Core.Entities;
 using MediatR;
 using System;
+using System.Data.Common;
 using System.Threading;
 using System.Threading.Tasks;
+using Kanban.Dashboard.Core.Dtos.Requests;
 
 namespace Kanban.Dashboard.Core.Features.Boards.Commands
 {
     public class CreateBoardCommand : IRequest<Guid>
     {
-        public BoardDto Board { get; set; }
+        public CreateOrUpdateBoardRequest Board { get; set; }
     }
 
     public class CreateBoardHandler : IRequestHandler<CreateBoardCommand, Guid>
@@ -26,8 +28,11 @@ namespace Kanban.Dashboard.Core.Features.Boards.Commands
 
         public async Task<Guid> Handle(CreateBoardCommand request, CancellationToken cancellationToken)
         {
-            var board = _mapper.Map<Board>(request.Board);
+            var boardDto = _mapper.Map<BoardDto>(request.Board);
+            var board = _mapper.Map<Board>(boardDto);
+
             board.DateOfCreation = DateTime.UtcNow;
+            board.DateOfModification = DateTime.UtcNow;
 
             _context.Boards.Add(board);
             await _context.SaveChangesAsync(cancellationToken);

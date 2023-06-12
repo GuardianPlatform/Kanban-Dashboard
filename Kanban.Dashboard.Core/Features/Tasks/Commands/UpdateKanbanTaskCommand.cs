@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Kanban.Dashboard.Core.Dtos;
+using Kanban.Dashboard.Core.Dtos.Requests;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,7 +14,7 @@ namespace Kanban.Dashboard.Core.Features.Tasks
         public Guid BoardId { get; set; }
         public Guid ColumnId { get; set; }
         public Guid Id { get; set; }
-        public KanbanTaskDto KanbanTask { get; set; }
+        public CreateOrUpdateKanbanTaskRequest KanbanTask { get; set; }
     }
 
     public class UpdateKanbanTaskHandler : IRequestHandler<UpdateKanbanTaskCommand>
@@ -29,6 +30,9 @@ namespace Kanban.Dashboard.Core.Features.Tasks
 
         public async Task Handle(UpdateKanbanTaskCommand request, CancellationToken cancellationToken)
         {
+            var kanbanTask = _mapper.Map<KanbanTaskDto>(request.KanbanTask);
+            kanbanTask.Id = request.Id;
+
             var board = await _context.Boards.AnyAsync(x => x.Id == request.BoardId, cancellationToken);
             if (board == false)
                 throw new Exception("Board not found.");
@@ -41,7 +45,7 @@ namespace Kanban.Dashboard.Core.Features.Tasks
             if (task == null) 
                 throw new Exception("KanbanTask not found.");
 
-            _mapper.Map(request.KanbanTask, task);
+            _mapper.Map(kanbanTask, task);
             task.DateOfModification = DateTime.UtcNow;
 
             _context.KanbanTasks.Update(task);

@@ -26,14 +26,17 @@ namespace Kanban.Dashboard.Core.Features.Boards.Queries
 
         public async Task<BoardDto> Handle(GetBoardQuery request, CancellationToken cancellationToken)
         {
-            var board = await _context.Boards
+            var query = _context.Boards
                 .AsNoTracking()
                 .Include(b => b.Columns)
-                .ThenInclude(c => c.Tasks).ThenInclude(x => x.Subtasks)
-                .FirstOrDefaultAsync(b => b.Id == request.Id, cancellationToken)
+                .ThenInclude(c => c.Tasks).ThenInclude(x => x.Parents)
+                .Include(x => x.Columns)
+                .ThenInclude(c => c.Tasks).ThenInclude(x => x.Subtasks);
+
+            var board = await query.FirstOrDefaultAsync(b => b.Id == request.Id, cancellationToken)
                 .ConfigureAwait(false);
 
-            return board != null ? _mapper.Map<BoardDto>(board) : throw new Exception("Board not found");
+            return board != null ? _mapper.Map<BoardDto>(board) : null!;
         }
     }
 }

@@ -11,6 +11,11 @@ public class DataSeeder
         var context = scope.ServiceProvider.GetRequiredService<IApplicationDbContext>();
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<DataSeeder>>();
 
+        context.Boards.RemoveRange(context.Boards);
+        context.Columns.RemoveRange(context.Columns);
+        context.KanbanTasks.RemoveRange(context.KanbanTasks);
+        context.KanbanTaskSubtask.RemoveRange(context.KanbanTaskSubtask);
+        await context.SaveChangesAsync(default);
         if (!context.Boards.Any())
         {
             logger.LogInformation("Seeding boards...");
@@ -36,12 +41,36 @@ public class DataSeeder
 
             var columns = new Column[]
             {
-                new Column { Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"), Name = "To Do", Order = 1, BoardId = boards[0].Id },
-                new Column { Id = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"), Name = "Doing", Order = 2, BoardId = boards[0].Id },
-                new Column { Id = new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"), Name = "Done", Order = 3, BoardId = boards[0].Id },
-                new Column { Id = new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"), Name = "To Do", Order = 1, BoardId = boards[1].Id },
-                new Column { Id = new Guid("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee"), Name = "Doing", Order = 2, BoardId = boards[1].Id },
-                new Column { Id = new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff"), Name = "Done", Order = 3, BoardId = boards[1].Id }
+                new Column
+                {
+                    Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"), Name = "To Do", Order = 1,
+                    BoardId = boards[0].Id
+                },
+                new Column
+                {
+                    Id = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"), Name = "Doing", Order = 2,
+                    BoardId = boards[0].Id
+                },
+                new Column
+                {
+                    Id = new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"), Name = "Done", Order = 3,
+                    BoardId = boards[0].Id
+                },
+                new Column
+                {
+                    Id = new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"), Name = "To Do", Order = 1,
+                    BoardId = boards[1].Id
+                },
+                new Column
+                {
+                    Id = new Guid("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee"), Name = "Doing", Order = 2,
+                    BoardId = boards[1].Id
+                },
+                new Column
+                {
+                    Id = new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff"), Name = "Done", Order = 3,
+                    BoardId = boards[1].Id
+                }
             };
 
             context.Columns.AddRange(columns);
@@ -56,10 +85,6 @@ public class DataSeeder
                     Description = "Task A description",
                     Order = 1,
                     ColumnId = columns[0].Id,
-                    Subtasks = new List<Subtask>()
-                    {
-                        new Subtask(){ Id = Guid.Parse("a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1") }
-                    },
                     Status = "Todo",
                     UserAttached = "User1"
                 },
@@ -100,7 +125,6 @@ public class DataSeeder
                     Description = "Task E description",
                     Order = 3,
                     ColumnId = columns[1].Id,
-                    Subtasks = new List<Subtask>(){new Subtask(){ Id = Guid.Parse("b3b3b3b3-b3b3-b3b3-b3b3-b3b3b3b3b3b3") }},
                     Status = "Done",
                     UserAttached = "User3"
                 },
@@ -112,12 +136,29 @@ public class DataSeeder
                     Order = 4,
                     ColumnId = columns[1].Id,
                     Status = "Todo",
-                    UserAttached = "User4"
+                    UserAttached = "User4",
                 },
             };
 
 
             context.KanbanTasks.AddRange(kanbanTasks);
+            await context.SaveChangesAsync(default);
+
+
+            var kanbanTaskSubtasks = new KanbanTaskSubtask[]
+            {
+                new KanbanTaskSubtask()
+                {
+                    ParentId = Guid.Parse("b0b0b0b0-b0b0-b0b0-b0b0-b0b0b0b0b0b0"),
+                    SubtaskId = Guid.Parse("b3b3b3b3-b3b3-b3b3-b3b3-b3b3b3b3b3b3")
+                },
+                new KanbanTaskSubtask()
+                {
+                    ParentId = Guid.Parse("a0a0a0a0-a0a0-a0a0-a0a0-a0a0a0a0a0a0"),
+                    SubtaskId = Guid.Parse("a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1")
+                },
+            };
+            context.KanbanTaskSubtask.AddRange(kanbanTaskSubtasks);
             await context.SaveChangesAsync(default);
         }
     }

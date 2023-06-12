@@ -3,17 +3,15 @@ using Kanban.Dashboard.Core.Dtos;
 using Kanban.Dashboard.Core.Entities;
 using MediatR;
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+using Kanban.Dashboard.Core.Dtos.Requests;
 
 namespace Kanban.Dashboard.Core.Features.Columns.Commands
 {
     public class CreateColumnCommand : IRequest<Guid>
     {
-        public Guid BoardId { get; set; }
-        public ColumnDto Column { get; set; }
+        public CreateOrUpdateColumnRequest Column { get; set; }
     }
 
     public class CreateColumnHandler : IRequestHandler<CreateColumnCommand, Guid>
@@ -29,13 +27,11 @@ namespace Kanban.Dashboard.Core.Features.Columns.Commands
 
         public async Task<Guid> Handle(CreateColumnCommand request, CancellationToken cancellationToken)
         {
-            var board = await _context.Boards.AnyAsync(x => x.Id == request.BoardId, cancellationToken);
-            if(board == false)
-                throw new Exception("Board not found.");
+            var columnDto = _mapper.Map<ColumnDto>(request.Column);
 
-            var column = _mapper.Map<Column>(request.Column);
+            var column = _mapper.Map<Column>(columnDto);
             column.DateOfCreation = DateTime.UtcNow;
-            column.BoardId = request.BoardId;
+            column.DateOfModification = DateTime.UtcNow;
 
             _context.Columns.Add(column);
             await _context.SaveChangesAsync(cancellationToken);

@@ -4,12 +4,15 @@ using MediatR;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Kanban.Dashboard.Core.Dtos.Requests;
 
 namespace Kanban.Dashboard.Core.Features.Boards.Commands
 {
     public class UpdateBoardCommand : IRequest
     {
-        public BoardDto Board { get; set; }
+        public Guid Id { get; set; }
+        public CreateOrUpdateBoardRequest Board { get; set; }
     }
 
     public class UpdateBoardHandler : IRequestHandler<UpdateBoardCommand>
@@ -25,13 +28,17 @@ namespace Kanban.Dashboard.Core.Features.Boards.Commands
 
         public async Task Handle(UpdateBoardCommand request, CancellationToken cancellationToken)
         {
+            var boardDto = _mapper.Map<BoardDto>(request.Board);
+
             var board = await _context.Boards
-                .FindAsync(request.Board.Id);
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x=>x.Id == request.Id, cancellationToken: cancellationToken)
+                .ConfigureAwait(false);
 
             if (board == null) 
                 throw new Exception("Board not found.");
 
-            _mapper.Map(request.Board, board);
+            _mapper.Map(boardDto, board);
             board.DateOfModification = DateTime.UtcNow;
 
             _context.Boards.Update(board);

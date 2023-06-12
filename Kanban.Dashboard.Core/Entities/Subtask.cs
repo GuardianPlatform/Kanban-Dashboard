@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using System.Text.Json.Serialization;
 
 namespace Kanban.Dashboard.Core.Entities
@@ -13,3 +13,4 @@ namespace Kanban.Dashboard.Core.Entities
         public KanbanTask KanbanTask { get; set; }
     }
 }
+*/

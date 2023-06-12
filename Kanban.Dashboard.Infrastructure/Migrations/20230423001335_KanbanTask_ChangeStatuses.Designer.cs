@@ -89,7 +89,7 @@ namespace Kanban.Dashboard.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Subtasks")
+                    b.Property<string>("JoinSubtasks")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

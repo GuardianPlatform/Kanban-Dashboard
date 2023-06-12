@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Kanban.Dashboard.Core.Entities;
-using System.Threading.Tasks;
 using Kanban.Dashboard.Core.Dtos;
+using Kanban.Dashboard.Core.Dtos.Requests;
 
 namespace Kanban.Dashboard.Core.Mappings
 {
@@ -12,7 +12,10 @@ namespace Kanban.Dashboard.Core.Mappings
             CreateMap<Board, BoardDto>().ReverseMap();
             CreateMap<Column, ColumnDto>().ReverseMap();
             CreateMap<KanbanTask, KanbanTaskDto>().ReverseMap();
-            CreateMap<Subtask, SubtaskDto>().ReverseMap();
+            CreateMap<KanbanTask, SubtaskDto>().ReverseMap();
+            CreateMap<KanbanTaskDto, CreateOrUpdateKanbanTaskRequest>().ReverseMap();
+            CreateMap<ColumnDto, CreateOrUpdateColumnRequest>().ReverseMap();
+            CreateMap<BoardDto, CreateOrUpdateBoardRequest>().ReverseMap();
         }
     }
 }

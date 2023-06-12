@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using Kanban.Dashboard.Core.Entities;
-using Newtonsoft.Json;
 
 namespace Kanban.Dashboard.Infrastructure.EntityConfigurations
 {
@@ -19,11 +18,21 @@ namespace Kanban.Dashboard.Infrastructure.EntityConfigurations
                 .HasForeignKey(t => t.ColumnId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.ToTable("KanbanTask")
-                .HasMany(t => t.Subtasks)
-                .WithOne(s => s.KanbanTask)
-                .HasForeignKey(s => s.Id)
-                .OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(x => x.Parents)
+                .WithMany(x => x.Subtasks)
+                .UsingEntity<KanbanTaskSubtask>(
+                    l => l.HasOne<KanbanTask>(x=>x.Parent).WithMany().OnDelete(DeleteBehavior.NoAction).HasForeignKey(x=>x.ParentId),
+                    r => r.HasOne<KanbanTask>(x=>x.Subtask).WithMany().OnDelete(DeleteBehavior.NoAction).HasForeignKey(x=>x.SubtaskId));
         }
     }
+
+/*    public class KanbanTaskSubtasksConfiguration : IEntityTypeConfiguration<KanbanTaskSubtask>
+    {
+        public void Configure(EntityTypeBuilder<KanbanTaskSubtask> builder)
+        {
+            builder.HasKey(x => x.Id);
+            builder.HasOne(x => x.Subtask).WithMany(x => x.JoinSubtasks).HasForeignKey(x => x.SubtaskId).OnDelete(DeleteBehavior.NoAction);
+            builder.HasOne(x => x.Parent).WithMany(x => x.JoinParents).HasForeignKey(x => x.ParentId).OnDelete(DeleteBehavior.NoAction);
+        }
+    }*/
 }

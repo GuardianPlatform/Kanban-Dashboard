@@ -53,7 +53,6 @@ namespace Kanban.Dashboard.Infrastructure.Migrations
                     Order = table.Column<int>(type: "int", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", maxLength: 4096, nullable: false),
-                    Subtasks = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Statuses = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ColumnId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },

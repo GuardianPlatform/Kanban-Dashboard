@@ -1,4 +1,4 @@
-﻿using Kanban.Dashboard.Core.Dtos;
+﻿using Kanban.Dashboard.Core.Dtos.Requests;
 using Kanban.Dashboard.Core.Features.Boards.Commands;
 using Kanban.Dashboard.Core.Features.Boards.Queries;
 using MediatR;
@@ -25,47 +25,45 @@ namespace Kanban.Dashboard.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateBoard(BoardDto board)
+        public async Task<IActionResult> CreateBoard(CreateOrUpdateBoardRequest request)
         {
             var boardId = await _mediator.Send(new CreateBoardCommand()
             {
-                Board = board
+                Board = request
             });
 
             return CreatedAtAction(nameof(GetBoard), new { id = boardId }, null);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetBoard(Guid id)
+        [HttpGet("{boardId}")]
+        public async Task<IActionResult> GetBoard(Guid boardId)
         {
             var board = await _mediator.Send(new GetBoardQuery
             {
-                Id = id
+                Id = boardId
             });
 
             return board != null ? Ok(board) : NotFound();
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateBoard(Guid id, BoardDto board)
+        [HttpPut("{boardId}")]
+        public async Task<IActionResult> UpdateBoard(Guid boardId, CreateOrUpdateBoardRequest request)
         {
-            if (id != board.Id) 
-                return BadRequest();
-
             await _mediator.Send(new UpdateBoardCommand()
             {
-                Board = board,
+                Board = request,
+                Id = boardId
             });
 
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteBoard(Guid id)
+        [HttpDelete("{boardId}")]
+        public async Task<IActionResult> DeleteBoard(Guid boardId)
         {
             await _mediator.Send(new DeleteBoardCommand
             {
-                Id = id
+                Id = boardId
             });
 
             return NoContent();

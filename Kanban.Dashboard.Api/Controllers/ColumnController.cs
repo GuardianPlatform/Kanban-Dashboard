@@ -1,11 +1,10 @@
-﻿using Kanban.Dashboard.Core.Dtos;
+﻿using Kanban.Dashboard.Core.Dtos.Requests;
 using Kanban.Dashboard.Core.Features.Columns.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 [ApiController]
-[Route("api/board/{boardId}/column")]
+[Route("api/column/")]
 public class ColumnController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -16,39 +15,34 @@ public class ColumnController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateColumn(Guid boardId, ColumnDto column)
+    public async Task<IActionResult> CreateColumn(CreateOrUpdateColumnRequest request)
     {
         var columnId = await _mediator.Send(new CreateColumnCommand()
         {
-            BoardId = boardId,
-            Column = column
+            Column = request
         });
 
         return CreatedAtAction(nameof(CreateColumn), new { id = columnId }, null);
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateColumn(Guid boardId, Guid id, ColumnDto column)
+    [HttpPut("{columnId}")]
+    public async Task<IActionResult> UpdateColumn(Guid columnId, CreateOrUpdateColumnRequest request)
     {
-        if (column.Id != id) 
-            return BadRequest();
-
         await _mediator.Send(new UpdateColumnCommand()
         {
-            Column = column,
-            BoardId = boardId
+            Id = columnId,
+            Column = request,
         });
 
         return NoContent();
     }
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteColumn(Guid boardId, Guid id)
+    [HttpDelete("{columnId}")]
+    public async Task<IActionResult> DeleteColumn(Guid columnId)
     {
         await _mediator.Send(new DeleteColumnCommand
         {
-            BoardId = boardId,
-            Id = id
+            Id = columnId
         });
 
         return NoContent();

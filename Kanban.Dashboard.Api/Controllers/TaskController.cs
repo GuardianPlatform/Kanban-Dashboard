@@ -1,11 +1,11 @@
-﻿using Kanban.Dashboard.Core.Dtos;
+﻿using Kanban.Dashboard.Core.Dtos.Requests;
 using Kanban.Dashboard.Core.Features.Tasks;
 using Kanban.Dashboard.Core.Features.Tasks.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
-[Route("api/board/{boardId}/column/{columnId}/task")]
+[Route("api/task/")]
 public class TaskController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -16,44 +16,48 @@ public class TaskController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateTask(Guid boardId, Guid columnId, KanbanTaskDto kanbanTask)
+    public async Task<IActionResult> CreateTask(CreateOrUpdateKanbanTaskRequest request)
     {
         var taskId = await _mediator.Send(new CreateKanbanTaskCommand()
         {
-            BoardId = boardId,
-            ColumnId = columnId,
-            KanbanTask = kanbanTask
+            KanbanTask = request
         });
 
         return CreatedAtAction(nameof(CreateTask), new { id = taskId }, null);
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateTask(Guid boardId, Guid columnId, Guid id, KanbanTaskDto kanbanTask)
+    [HttpPut("{taskId}")]
+    public async Task<IActionResult> UpdateTask(Guid taskId, CreateOrUpdateKanbanTaskRequest request)
     {
-        if (kanbanTask.Id != id)
-            return BadRequest();
-
         await _mediator.Send(new UpdateKanbanTaskCommand()
         {
-            BoardId = boardId,
-            ColumnId = columnId,
-            KanbanTask = kanbanTask
+            Id = taskId,
+            KanbanTask = request
         });
 
         return NoContent();
     }
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteTask(Guid boardId, Guid columnId, Guid id)
+    [HttpDelete("{taskId}")]
+    public async Task<IActionResult> DeleteTask(Guid taskId)
     {
         await _mediator.Send(new DeleteKanbanTaskCommand
         {
-            Id = id,
-            BoardId = boardId,
-            ColumnId = columnId
+            Id = taskId,
         });
 
         return NoContent();
+    }
+
+    [HttpPost("{taskId}/switch-column")]
+    public async Task<IActionResult> SwitchColumn(Guid taskId, SwitchColumnRequest request)
+    {
+        var result = await _mediator.Send(new SwitchTaskColumnCommand()
+        {
+            TaskId = taskId,
+            ColumnTargetId = request.ColumnTargetId
+        });
+
+        return Ok(result);
     }
 }
