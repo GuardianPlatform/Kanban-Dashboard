@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Kanban.Dashboard.Core.Dtos;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,7 +10,6 @@ namespace Kanban.Dashboard.Core.Features.Columns.Commands
 {
     public class UpdateColumnCommand : IRequest
     {
-        public Guid BoardId { get; set; }
         public Guid Id { get; set; }
         public CreateOrUpdateColumnRequest Column { get; set; }
     }
@@ -31,10 +29,6 @@ namespace Kanban.Dashboard.Core.Features.Columns.Commands
         {
             var columnDto = _mapper.Map<ColumnDto>(request.Column);
             columnDto.Id = request.Id;
-
-            var board = await _context.Boards.AnyAsync(x => x.Id == request.BoardId, cancellationToken);
-            if (board == false)
-                throw new Exception("Board not found.");
 
             var column = await _context.Columns.FindAsync(request.Id, cancellationToken);
             if (column == null)

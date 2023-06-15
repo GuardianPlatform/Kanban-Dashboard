@@ -1,6 +1,4 @@
-﻿using Kanban.Dashboard.Core.Entities;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
+﻿using MediatR;
 using System;
 using System.Threading;
 using System.Threading.Tasks;

@@ -13,6 +13,9 @@ namespace Kanban.Dashboard.Core.Validators
 
             RuleFor(x => x.Description)
                 .Length(0, 4096).WithMessage("Description must be less than or equal to 4096 characters.");
+
+            RuleFor(x => x.Status)
+                .Length(1, 100).WithMessage("Status is required.");
         }
     }
 }
