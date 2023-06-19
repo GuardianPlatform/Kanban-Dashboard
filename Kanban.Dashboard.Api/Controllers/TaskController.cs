@@ -5,7 +5,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
-[Route("api/task/")]
+[Route("api/board/{boardId}/column/{columnId}/task/")]
 public class TaskController : ControllerBase
 {
     private readonly IMediator _mediator;

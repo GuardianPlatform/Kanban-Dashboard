@@ -4,7 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
-[Route("api/column/")]
+[Route("api/board/{boardId}/column/")]
 public class ColumnController : ControllerBase
 {
     private readonly IMediator _mediator;
