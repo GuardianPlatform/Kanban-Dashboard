@@ -36,7 +36,13 @@ namespace Kanban.Dashboard.Core.Features.Boards.Queries
             var board = await query.FirstOrDefaultAsync(b => b.Id == request.Id, cancellationToken)
                 .ConfigureAwait(false);
 
-            return board != null ? _mapper.Map<BoardDto>(board) : null!;
+            var result = _mapper.Map<BoardDto>(board);
+            result.TotalNumberOfTasks = await _context.KanbanTasks
+                .Include(x=>x.Column)
+                .CountAsync(x=>x.Column.BoardId == board.Id, cancellationToken)
+                .ConfigureAwait(false);
+
+            return board != null ? result : null!;
         }
     }
 }

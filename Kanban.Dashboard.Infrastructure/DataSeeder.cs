@@ -11,13 +11,15 @@ public class DataSeeder
         var context = scope.ServiceProvider.GetRequiredService<IApplicationDbContext>();
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<DataSeeder>>();
 
-        context.Boards.RemoveRange(context.Boards);
+/*        context.Boards.RemoveRange(context.Boards);
         context.Columns.RemoveRange(context.Columns);
         context.KanbanTasks.RemoveRange(context.KanbanTasks);
         context.KanbanTaskSubtask.RemoveRange(context.KanbanTaskSubtask);
-        await context.SaveChangesAsync(default);
+        await context.SaveChangesAsync(default);*/
         if (!context.Boards.Any())
         {
+            var date = DateTime.UtcNow;
+
             logger.LogInformation("Seeding boards...");
 
             var boards = new Board[]
@@ -26,13 +28,17 @@ public class DataSeeder
                 {
                     Id = new Guid("11111111-1111-1111-1111-111111111111"),
                     Name = "My First Kanban Board",
-                    Order = 1
+                    Order = 1,
+                    DateOfCreation = date,
+                    DateOfModification = date
                 },
                 new Board
                 {
                     Id = new Guid("22222222-2222-2222-2222-222222222222"),
                     Name = "My Second Kanban Board",
-                    Order = 2
+                    Order = 2,
+                    DateOfCreation = date,
+                    DateOfModification = date
                 }
             };
 
@@ -44,32 +50,44 @@ public class DataSeeder
                 new Column
                 {
                     Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"), Name = "To Do", Order = 1,
-                    BoardId = boards[0].Id
+                    BoardId = boards[0].Id,
+                    DateOfCreation = date,
+                    DateOfModification = date
                 },
                 new Column
                 {
                     Id = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"), Name = "Doing", Order = 2,
-                    BoardId = boards[0].Id
+                    BoardId = boards[0].Id,
+                    DateOfCreation = date,
+                    DateOfModification = date
                 },
                 new Column
                 {
                     Id = new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"), Name = "Done", Order = 3,
-                    BoardId = boards[0].Id
+                    BoardId = boards[0].Id,
+                    DateOfCreation = date,
+                    DateOfModification = date
                 },
                 new Column
                 {
                     Id = new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"), Name = "To Do", Order = 1,
-                    BoardId = boards[1].Id
+                    BoardId = boards[1].Id,
+                    DateOfCreation = date,
+                    DateOfModification = date
                 },
                 new Column
                 {
                     Id = new Guid("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee"), Name = "Doing", Order = 2,
-                    BoardId = boards[1].Id
+                    BoardId = boards[1].Id,
+                    DateOfCreation = date,
+                    DateOfModification = date
                 },
                 new Column
                 {
                     Id = new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff"), Name = "Done", Order = 3,
-                    BoardId = boards[1].Id
+                    BoardId = boards[1].Id,
+                    DateOfCreation = date,
+                    DateOfModification = date
                 }
             };
 
@@ -86,7 +104,9 @@ public class DataSeeder
                     Order = 1,
                     ColumnId = columns[0].Id,
                     Status = "Todo",
-                    UserAttached = "User1"
+                    UserAttached = "User1",
+                    DateOfCreation = date,
+                    DateOfModification = date
                 },
                 new KanbanTask
                 {
@@ -96,7 +116,9 @@ public class DataSeeder
                     Order = 2,
                     ColumnId = columns[0].Id,
                     Status = "Doing",
-                    UserAttached = "User2"
+                    UserAttached = "User2",
+                    DateOfCreation = date,
+                    DateOfModification = date
                 },
                 new KanbanTask
                 {
@@ -106,7 +128,9 @@ public class DataSeeder
                     Order = 1,
                     ColumnId = columns[1].Id,
                     Status = "Todo",
-                    UserAttached = "User1"
+                    UserAttached = "User1",
+                    DateOfCreation = date,
+                    DateOfModification = date
                 },
                 new KanbanTask
                 {
@@ -116,7 +140,9 @@ public class DataSeeder
                     Order = 2,
                     ColumnId = columns[1].Id,
                     Status = "Done",
-                    UserAttached = "User2"
+                    UserAttached = "User2",
+                    DateOfCreation = date,
+                    DateOfModification = date
                 },
                 new KanbanTask
                 {
@@ -126,7 +152,9 @@ public class DataSeeder
                     Order = 3,
                     ColumnId = columns[1].Id,
                     Status = "Done",
-                    UserAttached = "User3"
+                    UserAttached = "User3",
+                    DateOfCreation = date,
+                    DateOfModification = date
                 },
                 new KanbanTask
                 {
@@ -137,6 +165,8 @@ public class DataSeeder
                     ColumnId = columns[1].Id,
                     Status = "Todo",
                     UserAttached = "User4",
+                    DateOfCreation = date,
+                    DateOfModification = date
                 },
             };
 
@@ -150,7 +180,7 @@ public class DataSeeder
                 new KanbanTaskSubtask()
                 {
                     ParentId = Guid.Parse("b0b0b0b0-b0b0-b0b0-b0b0-b0b0b0b0b0b0"),
-                    SubtaskId = Guid.Parse("b3b3b3b3-b3b3-b3b3-b3b3-b3b3b3b3b3b3")
+                    SubtaskId = Guid.Parse("b3b3b3b3-b3b3-b3b3-b3b3-b3b3b3b3b3b3"),
                 },
                 new KanbanTaskSubtask()
                 {

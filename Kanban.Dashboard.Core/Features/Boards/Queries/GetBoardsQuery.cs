@@ -30,7 +30,17 @@ namespace Kanban.Dashboard.Core.Features.Boards.Queries
                 .ToListAsync(cancellationToken)
                 .ConfigureAwait(false);
 
-            return _mapper.Map<IEnumerable<BoardDto>>(boards);
+            var result = _mapper.Map<List<BoardDto>>(boards);
+
+            foreach (var board in result)
+            {
+                board.TotalNumberOfTasks = await _context.KanbanTasks
+                    .Include(x => x.Column)
+                    .CountAsync(x => x.Column.BoardId == board.Id, cancellationToken)
+                    .ConfigureAwait(false);
+            }
+
+            return result;
         }
     }
 }
