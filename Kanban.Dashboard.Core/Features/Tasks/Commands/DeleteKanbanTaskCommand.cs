@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -29,6 +30,8 @@ namespace Kanban.Dashboard.Core.Features.Tasks
                 throw new Exception("KanbanTask not found.");
 
             _context.KanbanTasks.Remove(task);
+            _context.KanbanTaskSubtask.RemoveRange(_context.KanbanTaskSubtask.Where(x => x.SubtaskId == task.Id || x.ParentId == task.Id));
+
             await _context.SaveChangesAsync(cancellationToken);
         }
     }

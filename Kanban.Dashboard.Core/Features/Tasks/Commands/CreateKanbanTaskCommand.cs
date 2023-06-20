@@ -42,6 +42,16 @@ namespace Kanban.Dashboard.Core.Features.Tasks.Commands
             task.UserAttached ??= "None";
 
             _context.KanbanTasks.Add(task);
+
+            if (request.KanbanTask.ParentId.HasValue)
+            {
+                var parentTask = await _context.KanbanTasks.FindAsync(request.KanbanTask.ParentId.Value);
+                if (parentTask == null)
+                    throw new Exception("Parent task not found. ");
+
+                _context.KanbanTaskSubtask.Add(new KanbanTaskSubtask() { ParentId = parentTask.Id, SubtaskId = task.Id });
+            }
+
             await _context.SaveChangesAsync(cancellationToken);
 
             return task.Id;

@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Kanban.Dashboard.Core.Dtos;
 using Kanban.Dashboard.Core.Dtos.Requests;
+using Kanban.Dashboard.Core.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -45,6 +47,17 @@ namespace Kanban.Dashboard.Core.Features.Tasks
             task.DateOfModification = DateTime.UtcNow;
 
             _context.KanbanTasks.Update(task);
+
+            _context.KanbanTaskSubtask.RemoveRange(_context.KanbanTaskSubtask.Where(x => x.SubtaskId == task.Id));
+            if (request.KanbanTask.ParentId.HasValue)
+            {
+                var parentTask = await _context.KanbanTasks.FindAsync(request.KanbanTask.ParentId.Value);
+                if (parentTask == null)
+                    throw new Exception("Parent task not found. ");
+
+                _context.KanbanTaskSubtask.Add(new KanbanTaskSubtask() { ParentId = parentTask.Id, SubtaskId = task.Id });
+            }
+
             await _context.SaveChangesAsync(cancellationToken);
         }
     }

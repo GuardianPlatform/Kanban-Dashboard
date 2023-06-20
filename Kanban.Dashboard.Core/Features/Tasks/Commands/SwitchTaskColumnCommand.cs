@@ -32,6 +32,7 @@ namespace Kanban.Dashboard.Core.Features.Tasks.Commands
             if (column == null || task.Column.BoardId != column?.BoardId)
                 throw new Exception("Target column is located in different board than source column or target column does not exist.");
 
+
             task.ColumnId = request.ColumnTargetId;
             return await _context.SaveChangesAsync(cancellationToken) > 0;
         }
