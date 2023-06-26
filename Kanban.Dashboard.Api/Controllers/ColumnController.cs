@@ -22,7 +22,7 @@ public class ColumnController : ControllerBase
             Column = request
         });
 
-        return CreatedAtAction(nameof(CreateColumn), new { id = columnId }, null);
+        return CreatedAtAction(nameof(CreateColumn), new { columnId = columnId }, null);
     }
 
     [HttpPut("{columnId}")]

@@ -15,7 +15,9 @@ namespace Kanban.Dashboard.Core.Mappings
             CreateMap<KanbanTask, SubtaskDto>().ReverseMap();
             CreateMap<KanbanTaskDto, CreateOrUpdateKanbanTaskRequest>().ReverseMap();
             CreateMap<ColumnDto, CreateOrUpdateColumnRequest>().ReverseMap();
-            CreateMap<BoardDto, CreateOrUpdateBoardRequest>().ReverseMap();
+            CreateMap<BoardDto, CreateBoardRequest>().ReverseMap();
+            CreateMap<BoardDto, UpdateBoardRequest>().ReverseMap();
+            CreateMap<ColumnDto, CreateOrUpdateColumnsForBoardRequest>().ReverseMap();
         }
     }
 }

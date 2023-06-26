@@ -26,8 +26,16 @@ namespace Kanban.Dashboard.Core.Features.Tasks
         public async Task Handle(DeleteKanbanTaskCommand request, CancellationToken cancellationToken)
         {
             var task = await _context.KanbanTasks.FindAsync(request.Id);
-            if (task == null) 
+            if (task == null)
                 throw new Exception("KanbanTask not found.");
+
+            var column = await _context.Columns.Include(x => x.Board).FirstOrDefaultAsync(x => x.Tasks.Any(y => y.Id == request.Id), cancellationToken);
+
+            if (column != null)
+            {
+                column.DateOfModification = DateTime.UtcNow;
+                column.Board.DateOfModification = DateTime.UtcNow;
+            }
 
             _context.KanbanTasks.Remove(task);
             _context.KanbanTaskSubtask.RemoveRange(_context.KanbanTaskSubtask.Where(x => x.SubtaskId == task.Id || x.ParentId == task.Id));

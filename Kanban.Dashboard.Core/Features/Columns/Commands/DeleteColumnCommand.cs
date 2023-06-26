@@ -2,6 +2,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Kanban.Dashboard.Core.Features.Columns.Commands
 {
@@ -21,9 +22,11 @@ namespace Kanban.Dashboard.Core.Features.Columns.Commands
 
         public async Task Handle(DeleteColumnCommand request, CancellationToken cancellationToken)
         {
-            var column = await _context.Columns.FindAsync(request.Id);
+            var column = await _context.Columns.FirstOrDefaultAsync(x=>x.Id == request.Id, cancellationToken: cancellationToken);
             if (column == null) 
                 throw new Exception("Column not found.");
+
+            column.Board.DateOfModification = DateTime.UtcNow;
 
             _context.Columns.Remove(column);
             await _context.SaveChangesAsync(cancellationToken);

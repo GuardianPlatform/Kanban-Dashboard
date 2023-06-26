@@ -12,7 +12,7 @@ namespace Kanban.Dashboard.Core.Features.Boards.Commands
 {
     public class CreateBoardCommand : IRequest<Guid>
     {
-        public CreateOrUpdateBoardRequest Board { get; set; }
+        public CreateBoardRequest Board { get; set; }
     }
 
     public class CreateBoardHandler : IRequestHandler<CreateBoardCommand, Guid>

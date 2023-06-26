@@ -6,6 +6,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Kanban.Dashboard.Core.Dtos.Requests;
+using Microsoft.EntityFrameworkCore;
 
 namespace Kanban.Dashboard.Core.Features.Columns.Commands
 {
@@ -29,9 +30,14 @@ namespace Kanban.Dashboard.Core.Features.Columns.Commands
         {
             var columnDto = _mapper.Map<ColumnDto>(request.Column);
 
+            var board = await _context.Boards.FirstOrDefaultAsync(x => x.Id == request.Column.BoardId, cancellationToken);
+            if (board == null)
+                throw new Exception("Board not found.");
+
             var column = _mapper.Map<Column>(columnDto);
             column.DateOfCreation = DateTime.UtcNow;
             column.DateOfModification = DateTime.UtcNow;
+            board.DateOfModification = DateTime.UtcNow;
 
             _context.Columns.Add(column);
             await _context.SaveChangesAsync(cancellationToken);

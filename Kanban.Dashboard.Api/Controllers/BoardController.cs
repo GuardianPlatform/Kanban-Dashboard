@@ -25,14 +25,14 @@ namespace Kanban.Dashboard.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateBoard(CreateOrUpdateBoardRequest request)
+        public async Task<IActionResult> CreateBoard(CreateBoardRequest request)
         {
             var boardId = await _mediator.Send(new CreateBoardCommand()
             {
                 Board = request
             });
 
-            return CreatedAtAction(nameof(GetBoard), new { id = boardId }, null);
+            return CreatedAtAction(nameof(GetBoard), new { boardId = boardId }, null);
         }
 
         [HttpGet("{boardId}")]
@@ -47,7 +47,7 @@ namespace Kanban.Dashboard.Api.Controllers
         }
 
         [HttpPut("{boardId}")]
-        public async Task<IActionResult> UpdateBoard(Guid boardId, CreateOrUpdateBoardRequest request)
+        public async Task<IActionResult> UpdateBoard(Guid boardId, UpdateBoardRequest request)
         {
             await _mediator.Send(new UpdateBoardCommand()
             {
