@@ -2,6 +2,6 @@
 {
     public abstract class BaseRequest
     {
-        public int Order { get; set; }
+        public int Order { get; set; } = 0;
     }
 }

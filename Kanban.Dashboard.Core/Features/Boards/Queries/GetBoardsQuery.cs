@@ -3,6 +3,7 @@ using Kanban.Dashboard.Core.Dtos;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -27,6 +28,8 @@ namespace Kanban.Dashboard.Core.Features.Boards.Queries
         {
             var boards = await _context.Boards
                 .AsNoTracking()
+                .OrderBy(x=>x.Order)
+                .ThenByDescending(x=>x.DateOfModification)
                 .ToListAsync(cancellationToken)
                 .ConfigureAwait(false);
 

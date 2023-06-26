@@ -36,6 +36,9 @@ namespace Kanban.Dashboard.Core.Features.Boards.Queries
             var board = await query.FirstOrDefaultAsync(b => b.Id == request.Id, cancellationToken)
                 .ConfigureAwait(false);
 
+            if(board == null)
+                throw new Exception("Board not found.");
+
             var result = _mapper.Map<BoardDto>(board);
             result.TotalNumberOfTasks = await _context.KanbanTasks
                 .Include(x=>x.Column)

@@ -32,7 +32,6 @@ namespace Kanban.Dashboard.Api
                         IgnoreSerializableAttribute = true,
                         NamingStrategy = new CamelCaseNamingStrategy()
                     };
-                    options.SerializerSettings.DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate;
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 });
 

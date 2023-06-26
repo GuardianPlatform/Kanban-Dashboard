@@ -13,7 +13,6 @@ namespace Kanban.Dashboard.Core.Features.Tasks.Commands
 {
     public class CreateKanbanTaskCommand : IRequest<Guid>
     {
-        public Guid ColumnId { get; set; }
         public CreateOrUpdateKanbanTaskRequest KanbanTask { get; set; }
     }
 
@@ -32,8 +31,8 @@ namespace Kanban.Dashboard.Core.Features.Tasks.Commands
         {
             var kanbanTaskDto = _mapper.Map<KanbanTaskDto>(request.KanbanTask);
 
-            var column = await _context.Columns.AnyAsync(x => x.Id == kanbanTaskDto.ColumnId, cancellationToken);
-            if (column == false)
+            var column = await _context.Columns.Include(x=>x.Board).FirstOrDefaultAsync(x=>x.Id == kanbanTaskDto.ColumnId, cancellationToken);
+            if (column == null)
                 throw new Exception("Column not found.");
 
             var task = _mapper.Map<KanbanTask>(kanbanTaskDto);
@@ -41,7 +40,20 @@ namespace Kanban.Dashboard.Core.Features.Tasks.Commands
             task.DateOfModification = DateTime.UtcNow;
             task.UserAttached ??= "None";
 
+            column.DateOfModification = DateTime.UtcNow;
+            column.Board.DateOfModification = DateTime.UtcNow;
+
             _context.KanbanTasks.Add(task);
+
+            if (request.KanbanTask.ParentId != Guid.Empty)
+            {
+                var parentTask = await _context.KanbanTasks.FirstOrDefaultAsync(x=>x.Id == request.KanbanTask.ParentId.Value, cancellationToken: cancellationToken);
+                if (parentTask == null)
+                    throw new Exception("Parent task not found. ");
+
+                _context.KanbanTaskSubtask.Add(new KanbanTaskSubtask() { ParentId = parentTask.Id, SubtaskId = task.Id });
+            }
+
             await _context.SaveChangesAsync(cancellationToken);
 
             return task.Id;
