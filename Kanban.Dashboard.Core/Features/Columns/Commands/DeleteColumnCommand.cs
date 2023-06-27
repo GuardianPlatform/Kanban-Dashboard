@@ -22,7 +22,7 @@ namespace Kanban.Dashboard.Core.Features.Columns.Commands
 
         public async Task Handle(DeleteColumnCommand request, CancellationToken cancellationToken)
         {
-            var column = await _context.Columns.FirstOrDefaultAsync(x=>x.Id == request.Id, cancellationToken: cancellationToken);
+            var column = await _context.Columns.Include(x=>x.Board).FirstOrDefaultAsync(x=>x.Id == request.Id, cancellationToken: cancellationToken);
             if (column == null) 
                 throw new Exception("Column not found.");
 
