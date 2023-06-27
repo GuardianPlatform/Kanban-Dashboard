@@ -33,6 +33,11 @@ namespace Kanban.Dashboard.Core.Features.Boards.Commands
 
             board.DateOfCreation = DateTime.UtcNow;
             board.DateOfModification = DateTime.UtcNow;
+            foreach (var boardColumn in board.Columns)
+            {
+                boardColumn.DateOfModification = DateTime.UtcNow;
+                boardColumn.DateOfCreation = DateTime.UtcNow;
+            }
 
             _context.Boards.Add(board);
             await _context.SaveChangesAsync(cancellationToken);

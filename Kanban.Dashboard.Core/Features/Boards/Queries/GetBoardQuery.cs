@@ -3,6 +3,7 @@ using Kanban.Dashboard.Core.Dtos;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -30,8 +31,11 @@ namespace Kanban.Dashboard.Core.Features.Boards.Queries
                 .AsNoTracking()
                 .Include(b => b.Columns)
                 .ThenInclude(c => c.Tasks).ThenInclude(x => x.Parents)
-                .Include(x => x.Columns)
-                .ThenInclude(c => c.Tasks).ThenInclude(x => x.Subtasks);
+                .OrderBy(x => x.Order)
+                .ThenByDescending(x => x.DateOfModification).Include(x => x.Columns)
+                .ThenInclude(c => c.Tasks).ThenInclude(x => x.Subtasks)
+                .OrderBy(x => x.Order)
+                .ThenByDescending(x => x.DateOfModification);
 
             var board = await query.FirstOrDefaultAsync(b => b.Id == request.Id, cancellationToken)
                 .ConfigureAwait(false);

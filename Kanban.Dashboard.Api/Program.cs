@@ -1,5 +1,6 @@
 
 using FluentValidation;
+using Kanban.Dashboard.Api.Middlewares;
 using Kanban.Dashboard.Core;
 using Kanban.Dashboard.Infrastructure;
 using Microsoft.EntityFrameworkCore;
@@ -39,7 +40,7 @@ namespace Kanban.Dashboard.Api
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
-
+            app.UseMiddleware<ExceptionMiddleware>();
             await MigrationProvider.Migrate(app.Services);
             await DataSeeder.SeedAsync(app.Services);
 
