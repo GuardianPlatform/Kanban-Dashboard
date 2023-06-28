@@ -1,0 +1,17 @@
+﻿using Kanban.Dashboard.Core.Dtos;
+using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
+
+namespace Kanban.Dashboard.Core.Entities
+{
+    public class ApplicationUser : IdentityUser
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public List<RefreshToken> RefreshTokens { get; set; }
+        public bool OwnsToken(string token)
+        {
+            return RefreshTokens?.Find(x => x.Token == token) != null;
+        }
+    }
+}

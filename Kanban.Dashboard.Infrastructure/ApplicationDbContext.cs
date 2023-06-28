@@ -2,7 +2,6 @@
 using Kanban.Dashboard.Core.Entities;
 using Kanban.Dashboard.Infrastructure.EntityConfigurations;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 
 namespace Kanban.Dashboard.Infrastructure
 {
@@ -12,6 +11,8 @@ namespace Kanban.Dashboard.Infrastructure
         public DbSet<Column> Columns { get; set; }
         public DbSet<KanbanTask> KanbanTasks { get; set; }
         public DbSet<KanbanTaskSubtask> KanbanTaskSubtask { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<BoardUsers> BoardUsers { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -39,18 +40,6 @@ namespace Kanban.Dashboard.Infrastructure
            // OnBeforeSaving();
             return await base.SaveChangesAsync(cancellationToken)
                 .ConfigureAwait(false);
-        }
-
-        private void OnBeforeSaving()
-        {
-            var now = DateTime.UtcNow;
-            foreach (var entry in ChangeTracker.Entries<BaseEntity>())
-            {
-                entry.Entity.DateOfModification = now;
-
-                if (entry.State == EntityState.Added)
-                    entry.Entity.DateOfCreation = now;
-            }
         }
     }
 }

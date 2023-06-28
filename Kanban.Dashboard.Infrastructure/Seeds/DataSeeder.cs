@@ -1,7 +1,11 @@
 ﻿using Kanban.Dashboard.Core;
 using Kanban.Dashboard.Core.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+
+namespace Kanban.Dashboard.Infrastructure.Seeds;
 
 public class DataSeeder
 {
@@ -11,11 +15,11 @@ public class DataSeeder
         var context = scope.ServiceProvider.GetRequiredService<IApplicationDbContext>();
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<DataSeeder>>();
 
-/*        context.Boards.RemoveRange(context.Boards);
-        context.Columns.RemoveRange(context.Columns);
-        context.KanbanTasks.RemoveRange(context.KanbanTasks);
-        context.KanbanTaskSubtask.RemoveRange(context.KanbanTaskSubtask);
-        await context.SaveChangesAsync(default);*/
+        /*        context.Boards.RemoveRange(context.Boards);
+            context.Columns.RemoveRange(context.Columns);
+            context.KanbanTasks.RemoveRange(context.KanbanTasks);
+            context.KanbanTaskSubtask.RemoveRange(context.KanbanTaskSubtask);
+            await context.SaveChangesAsync(default);*/
         if (!context.Boards.Any())
         {
             var date = DateTime.UtcNow;
@@ -191,5 +195,30 @@ public class DataSeeder
             context.KanbanTaskSubtask.AddRange(kanbanTaskSubtasks);
             await context.SaveChangesAsync(default);
         }
+    }
+
+    public static void IdentitySeedAsync(ModelBuilder modelBuilder)
+    {
+        CreateRoles(modelBuilder);
+        CreateBasicUsers(modelBuilder);
+        MapUserRole(modelBuilder);
+    }
+
+    private static void CreateRoles(ModelBuilder modelBuilder)
+    {
+        var roles = DefaultRoles.IdentityRoleList();
+        modelBuilder.Entity<IdentityRole>().HasData(roles);
+    }
+
+    private static void CreateBasicUsers(ModelBuilder modelBuilder)
+    {
+        var users = DefaultUser.IdentityBasicUserList();
+        modelBuilder.Entity<User>().HasData(users);
+    }
+
+    private static void MapUserRole(ModelBuilder modelBuilder)
+    {
+        var identityUserRoles = MappingRoleToUsers.IdentityUserRoleList();
+        modelBuilder.Entity<IdentityUserRole<string>>().HasData(identityUserRoles);
     }
 }

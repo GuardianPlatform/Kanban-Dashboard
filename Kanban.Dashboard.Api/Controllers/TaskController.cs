@@ -1,8 +1,9 @@
 ﻿using Kanban.Dashboard.Core.Dtos.Requests;
-using Kanban.Dashboard.Core.Features.Tasks;
 using Kanban.Dashboard.Core.Features.Tasks.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+
+namespace Kanban.Dashboard.Api.Controllers;
 
 [ApiController]
 [Route("api/task/")]

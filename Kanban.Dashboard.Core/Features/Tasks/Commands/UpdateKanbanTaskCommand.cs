@@ -1,15 +1,15 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using AutoMapper;
 using Kanban.Dashboard.Core.Dtos;
 using Kanban.Dashboard.Core.Dtos.Requests;
 using Kanban.Dashboard.Core.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace Kanban.Dashboard.Core.Features.Tasks
+namespace Kanban.Dashboard.Core.Features.Tasks.Commands
 {
     public class UpdateKanbanTaskCommand : IRequest
     {

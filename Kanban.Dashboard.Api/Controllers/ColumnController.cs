@@ -3,6 +3,8 @@ using Kanban.Dashboard.Core.Features.Columns.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
+namespace Kanban.Dashboard.Api.Controllers;
+
 [ApiController]
 [Route("api/column/")]
 public class ColumnController : ControllerBase
