@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33402.96
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "documentation", "documentation", "{21758244-8479-4C84-BC25-C1F7E4EAC132}"
+	ProjectSection(SolutionItems) = preProject
+		documentation\board.txt = documentation\board.txt
+		documentation\column.txt = documentation\column.txt
+		documentation\kanbantask.txt = documentation\kanbantask.txt
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kanban.Dashboard.Api", "Kanban.Dashboard.Api\Kanban.Dashboard.Api.csproj", "{959EBCAD-08BF-429C-AC1F-005CD9011BC5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kanban.Dashboard.Core", "Kanban.Dashboard.Core\Kanban.Dashboard.Core.csproj", "{3C9B065F-8FB4-4643-B04B-824B5E248EBB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kanban.Dashboard.Infrastructure", "Kanban.Dashboard.Infrastructure\Kanban.Dashboard.Infrastructure.csproj", "{802BD0B8-62FE-4345-AD40-815C8379F5A5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{959EBCAD-08BF-429C-AC1F-005CD9011BC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{959EBCAD-08BF-429C-AC1F-005CD9011BC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{959EBCAD-08BF-429C-AC1F-005CD9011BC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{959EBCAD-08BF-429C-AC1F-005CD9011BC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C9B065F-8FB4-4643-B04B-824B5E248EBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C9B065F-8FB4-4643-B04B-824B5E248EBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C9B065F-8FB4-4643-B04B-824B5E248EBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C9B065F-8FB4-4643-B04B-824B5E248EBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{802BD0B8-62FE-4345-AD40-815C8379F5A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{802BD0B8-62FE-4345-AD40-815C8379F5A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{802BD0B8-62FE-4345-AD40-815C8379F5A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{802BD0B8-62FE-4345-AD40-815C8379F5A5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A3FBB96F-7D24-44DC-97E8-C93C7E588B86}
+	EndGlobalSection
+EndGlobal
