@@ -101,10 +101,7 @@ namespace Kanban.Dashboard.Api
                 setupAction.RoutePrefix = "swagger";
             });
 
-            app.UseCors(x => x
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .AllowAnyOrigin());
+            app.UseCors("CorsPolicy");
 
             app.UseHttpsRedirection();
 
@@ -171,6 +168,14 @@ namespace Kanban.Dashboard.Api
                      },
                  };
              });
+
+            services.AddCors(options =>
+                options.AddPolicy("CorsPolicy", builder =>
+                    builder.SetIsOriginAllowed(origin => true)
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials()
+                ));
 
             services.AddTransient<IAccountService, AccountService>();
             services.Configure<JwtSettings>(configuration.GetSection("JWTSettings"));
