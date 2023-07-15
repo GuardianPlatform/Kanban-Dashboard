@@ -9,7 +9,6 @@ namespace Kanban.Dashboard.Core.Dtos
         public string Name { get; set; }
         public ICollection<KanbanTaskDto> Tasks { get; set; } = new List<KanbanTaskDto>();
 
-        [IgnoreDataMember]
         public Guid BoardId { get; set; }
     }
 }

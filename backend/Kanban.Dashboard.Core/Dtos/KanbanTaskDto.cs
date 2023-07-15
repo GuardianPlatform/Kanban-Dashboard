@@ -13,8 +13,6 @@ namespace Kanban.Dashboard.Core.Dtos
         public List<SubtaskDto> Subtasks { get; set; } = new List<SubtaskDto>();
         public List<SubtaskDto> Parents { get; set; } = new List<SubtaskDto>();
         public string Status { get; set; }
-
-        [IgnoreDataMember]
         public Guid ColumnId { get; set; }
     }
 }
