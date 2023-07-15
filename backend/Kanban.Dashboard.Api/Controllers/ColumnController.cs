@@ -1,8 +1,10 @@
 ﻿using Kanban.Dashboard.Core.Dtos.Requests;
 using Kanban.Dashboard.Core.Features.Columns.Commands;
+using Kanban.Dashboard.Core.Features.Tasks.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Kanban.Dashboard.Api.Controllers;
 
@@ -50,5 +52,17 @@ public class ColumnController : ControllerBase
         });
 
         return NoContent();
+    }
+
+    [HttpPost("{columnId}/reorder")]
+    public async Task<IActionResult> ReorderTasks(Guid columnId, Guid[] taskIds)
+    {
+        var result = await _mediator.Send(new ReorderTasksCommand()
+        {
+            ColumnId = columnId,
+            TaskIds = taskIds
+        });
+
+        return Ok(result);
     }
 }

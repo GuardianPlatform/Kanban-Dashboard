@@ -29,13 +29,13 @@ namespace Kanban.Dashboard.Core.Features.Boards.Queries
         {
             var query = _context.Boards
                 .AsNoTracking()
-                .Include(b => b.Columns)
-                .ThenInclude(c => c.Tasks).ThenInclude(x => x.Parents)
+                .OrderBy(x=>x.Order)
+                .Include(b => b.Columns.OrderBy(x => x.Order)).ThenInclude(c => c.Tasks.OrderBy(x => x.Order)).ThenInclude(x => x.Parents.OrderBy(x => x.Order))
                 .OrderBy(x => x.Order)
-                .ThenByDescending(x => x.DateOfModification).Include(x => x.Columns)
-                .ThenInclude(c => c.Tasks).ThenInclude(x => x.Subtasks)
+                .Include(x => x.Columns.OrderBy(x => x.Order)).ThenInclude(c => c.Tasks.OrderBy(x => x.Order)).ThenInclude(x => x.Subtasks.OrderBy(x => x.Order))
                 .OrderBy(x => x.Order)
-                .ThenByDescending(x => x.DateOfModification);
+                .Include(b => b.Columns.OrderBy(x=>x.Order)).ThenInclude(c => c.Tasks.OrderBy(x => x.Order))
+                .OrderBy(x => x.Order);
 
             var board = await query.FirstOrDefaultAsync(b => b.Id == request.Id, cancellationToken)
                 .ConfigureAwait(false);
