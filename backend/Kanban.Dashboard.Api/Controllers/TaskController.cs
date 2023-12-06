@@ -52,6 +52,7 @@ public class TaskController : ControllerBase
         return NoContent();
     }
 
+    [Obsolete]
     [HttpPost("{taskId}/switch-column")]
     public async Task<IActionResult> SwitchColumn(Guid taskId, SwitchColumnRequest request)
     {
@@ -59,6 +60,19 @@ public class TaskController : ControllerBase
         {
             TaskId = taskId,
             ColumnTargetId = request.ColumnTargetId
+        });
+
+        return Ok(result);
+    }
+
+    [HttpPost("{taskId}/move")]
+    public async Task<IActionResult> Move(Guid taskId,  MoveTaskRequest request)
+    {
+        var result = await _mediator.Send(new MoveTaskCommand()
+        {
+            TaskId = taskId,
+            ColumnTargetId = request.ColumnTargetId,
+            Order = request.Order
         });
 
         return Ok(result);

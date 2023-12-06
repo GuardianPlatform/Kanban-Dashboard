@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Kanban.Dashboard.Core.Dtos.Requests;
 
-public class CreateOrUpdateKanbanTaskRequest : BaseRequest
+public class CreateOrUpdateKanbanTaskRequest
 {
     public string Title { get; set; }
     public string Description { get; set; }

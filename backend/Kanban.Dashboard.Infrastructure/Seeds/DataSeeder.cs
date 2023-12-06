@@ -53,42 +53,48 @@ public class DataSeeder
             {
                 new Column
                 {
-                    Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"), Name = "To Do", Order = 1,
+                    Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"), Name = "To Do", 
+                    Order = 1,
+                    BoardId = boards[0].Id,
+                    DateOfCreation = date,
+                    DateOfModification = date,
+                },
+                new Column
+                {
+                    Id = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"), Name = "Doing", 
+                    Order = 2,
                     BoardId = boards[0].Id,
                     DateOfCreation = date,
                     DateOfModification = date
                 },
                 new Column
                 {
-                    Id = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"), Name = "Doing", Order = 2,
+                    Id = new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"), Name = "Done", 
+                    Order = 3,
                     BoardId = boards[0].Id,
                     DateOfCreation = date,
                     DateOfModification = date
                 },
                 new Column
                 {
-                    Id = new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"), Name = "Done", Order = 3,
-                    BoardId = boards[0].Id,
-                    DateOfCreation = date,
-                    DateOfModification = date
-                },
-                new Column
-                {
-                    Id = new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"), Name = "To Do", Order = 1,
+                    Id = new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"), Name = "To Do", 
+                    Order = 1,
                     BoardId = boards[1].Id,
                     DateOfCreation = date,
                     DateOfModification = date
                 },
                 new Column
                 {
-                    Id = new Guid("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee"), Name = "Doing", Order = 2,
+                    Id = new Guid("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee"), Name = "Doing", 
+                    Order = 2,
                     BoardId = boards[1].Id,
                     DateOfCreation = date,
                     DateOfModification = date
                 },
                 new Column
                 {
-                    Id = new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff"), Name = "Done", Order = 3,
+                    Id = new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff"), Name = "Done", 
+                    Order = 3,
                     BoardId = boards[1].Id,
                     DateOfCreation = date,
                     DateOfModification = date
@@ -110,7 +116,7 @@ public class DataSeeder
                     Status = "Todo",
                     UserAttached = "User1",
                     DateOfCreation = date,
-                    DateOfModification = date
+                    DateOfModification = date,
                 },
                 new KanbanTask
                 {

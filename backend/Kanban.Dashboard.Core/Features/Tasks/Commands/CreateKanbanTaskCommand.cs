@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
+using Kanban.Dashboard.Core.Dtos;
 using Kanban.Dashboard.Core.Dtos.Requests;
 using Kanban.Dashboard.Core.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Kanban.Dashboard.Core.Dtos;
 
 namespace Kanban.Dashboard.Core.Features.Tasks.Commands
 {
@@ -31,13 +31,14 @@ namespace Kanban.Dashboard.Core.Features.Tasks.Commands
         {
             var kanbanTaskDto = _mapper.Map<KanbanTaskDto>(request.KanbanTask);
 
-            var column = await _context.Columns.Include(x=>x.Board).FirstOrDefaultAsync(x=>x.Id == kanbanTaskDto.ColumnId, cancellationToken);
+            var column = await _context.Columns.Include(x => x.Board).Include(x => x.Tasks).FirstOrDefaultAsync(x => x.Id == kanbanTaskDto.ColumnId, cancellationToken);
             if (column == null)
                 throw new Exception("Column not found.");
 
             var task = _mapper.Map<KanbanTask>(kanbanTaskDto);
             task.DateOfCreation = DateTime.UtcNow;
             task.DateOfModification = DateTime.UtcNow;
+            task.Order = column.Tasks.Max(x => x?.Order) + 1 ?? 1;
             task.UserAttached ??= "None";
 
             column.DateOfModification = DateTime.UtcNow;
@@ -47,7 +48,7 @@ namespace Kanban.Dashboard.Core.Features.Tasks.Commands
 
             if (request.KanbanTask.ParentId != Guid.Empty)
             {
-                var parentTask = await _context.KanbanTasks.FirstOrDefaultAsync(x=>x.Id == request.KanbanTask.ParentId.Value, cancellationToken: cancellationToken);
+                var parentTask = await _context.KanbanTasks.FirstOrDefaultAsync(x => x.Id == request.KanbanTask.ParentId.Value, cancellationToken: cancellationToken);
                 if (parentTask == null)
                     throw new Exception("Parent task not found. ");
 
