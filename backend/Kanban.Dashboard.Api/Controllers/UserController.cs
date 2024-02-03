@@ -18,6 +18,9 @@ namespace Kanban.Dashboard.Api.Controllers
             _mediator = mediator;
         }
 
+        /// <summary>
+        /// Get all users
+        /// </summary>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<UserDto>), 200)]
         public Task<IEnumerable<UserDto>> GetAllUsers()
@@ -25,6 +28,10 @@ namespace Kanban.Dashboard.Api.Controllers
             return _mediator.Send(new GetAllUsersQuery());
         }
 
+        /// <summary>
+        /// Get user by id
+        /// </summary>
+        /// <param name="id">User's Id(guid)</param>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

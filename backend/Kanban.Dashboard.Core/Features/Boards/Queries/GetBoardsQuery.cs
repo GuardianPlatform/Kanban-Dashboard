@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 
 namespace Kanban.Dashboard.Core.Features.Boards.Queries
 {
@@ -18,20 +17,17 @@ namespace Kanban.Dashboard.Core.Features.Boards.Queries
     {
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public GetBoardsQuery(IApplicationDbContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+        public GetBoardsQuery(IApplicationDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
-            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<IEnumerable<BoardDto>> Handle(GetBoardsCommand request, CancellationToken cancellationToken)
         {
             var boards = await _context.Boards
                 .AsNoTracking()
-                .Where(x => x.Users.Any(x => x.UserName == _httpContextAccessor.HttpContext.User.Identity.Name))
                 .OrderBy(x => x.Order)
                 .ThenByDescending(x => x.DateOfModification)
                 .ToListAsync(cancellationToken)
